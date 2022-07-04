@@ -52,3 +52,6 @@
 
 [init]
   defaultBranch = master
+[user]
+	email = egehdrgl@gmail.com
+	name = Ege Hidiroglu
