@@ -1,0 +1,19 @@
+# Backups created by setup.sh
+*.bak.*
+
+# OS junk
+.DS_Store
+Icon
+._*
+
+# Editor cruft
+*.swp
+*.swo
+
+# Don't accidentally commit secrets
+.env
+.env.*
+*.pem
+*.key
+id_rsa*
+id_ed25519*

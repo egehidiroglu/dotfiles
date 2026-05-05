@@ -1,0 +1,65 @@
+# ~/.config/ghostty/config — evangelion-neon profile.
+# Reload: Cmd+, or quit/relaunch. Palette in PALETTE.md.
+
+# ── Font ──────────────────────────────────────────────────────────────────
+font-family       = JetBrainsMono Nerd Font
+font-size         = 14
+font-feature      = +calt    # contextual alternates / ligatures
+font-feature      = +liga
+adjust-cell-height = 5%
+
+# ── Theme: evangelion-neon ────────────────────────────────────────────────
+background           = 050510
+foreground           = e0e0ff
+cursor-color         = ff00ff
+cursor-text          = 050510
+selection-background = 2a1a4a
+selection-foreground = ffffff
+
+# ANSI palette
+palette = 0=#1a1a2e
+palette = 1=#ff1744
+palette = 2=#39ff14
+palette = 3=#ffea00
+palette = 4=#0099ff
+palette = 5=#ff00ff
+palette = 6=#00ffff
+palette = 7=#c0c0e0
+palette = 8=#4a4a6a
+palette = 9=#ff5252
+palette = 10=#5eff39
+palette = 11=#fff04d
+palette = 12=#4dd9ff
+palette = 13=#b026ff
+palette = 14=#4dffff
+palette = 15=#ffffff
+
+# ── Window ────────────────────────────────────────────────────────────────
+window-padding-x       = 12
+window-padding-y       = 12
+window-padding-balance = true
+window-decoration      = true
+window-theme           = dark
+macos-titlebar-style   = transparent
+background-opacity     = 0.92         # slightly more transparent for the cyberpunk depth
+background-blur-radius = 30           # more blur for the dreamy through-the-glass look
+
+# Cursor
+cursor-style            = block
+cursor-style-blink      = true        # the cursor pulses now — feels alive
+shell-integration       = zsh
+copy-on-select          = clipboard
+mouse-hide-while-typing = true
+confirm-close-surface   = false
+
+# ── CRT shader (now louder) ───────────────────────────────────────────────
+custom-shader = ~/.config/ghostty/shaders/crt.glsl
+custom-shader-animation = always
+
+# ── Keybinds ──────────────────────────────────────────────────────────────
+keybind = cmd+t=new_tab
+keybind = cmd+w=close_surface
+keybind = cmd+d=new_split:right
+keybind = cmd+shift+d=new_split:down
+keybind = cmd+enter=toggle_fullscreen
+keybind = cmd+k=clear_screen

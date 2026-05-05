@@ -1,0 +1,45 @@
+# ~/.config/lazygit/config.yml — evangelion-neon theme
+gui:
+  theme:
+    activeBorderColor:
+      - "#ff00ff"
+      - bold
+    inactiveBorderColor:
+      - "#1a1a3a"
+    optionsTextColor:
+      - "#0099ff"
+    selectedLineBgColor:
+      - "#1a1a3a"
+    cherryPickedCommitBgColor:
+      - "#2a1a4a"
+    cherryPickedCommitFgColor:
+      - "#b026ff"
+    unstagedChangesColor:
+      - "#ff1744"
+    defaultFgColor:
+      - "#e0e0ff"
+  showFileTree: true
+  showRandomTip: false
+  showCommandLog: false
+  scrollHeight: 4
+  sidePanelWidth: 0.3333
+  language: en
+  nerdFontsVersion: "3"
+  border: rounded
+
+git:
+  paging:
+    colorArg: always
+    pager: delta --paging=never
+  log:
+    order: topo-order
+  fetchAll: true
+
+os:
+  edit: nvim {{filename}}
+  editAtLine: nvim +{{line}} {{filename}}
+  editAtLineAndWait: nvim +{{line}} {{filename}}
+
+confirmOnQuit: false
+disableStartupPopups: true
+notARepository: skip

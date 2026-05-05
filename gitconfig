@@ -1,0 +1,112 @@
+# ~/.gitconfig — opinionated, signed, delta-paged.
+# Replace user.name and user.email below before deploying.
+
+[user]
+	name = Ege Hidiroglu
+	email = egehdrgl@gmail.com
+	# Uncomment when you set up SSH or GPG signing keys:
+	# signingkey = ~/.ssh/id_ed25519.pub
+
+[init]
+	defaultBranch = main
+
+[core]
+	editor = nvim
+	pager = delta
+	autocrlf = input
+	excludesfile = ~/.gitignore_global
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true            # n/N to move between diff sections
+	light = false
+	side-by-side = false
+	line-numbers = true
+	syntax-theme = 1337        # high-contrast cyberpunk syntax theme (built into bat)
+	hyperlinks = true
+	hyperlinks-file-link-format = "vscode://file/{path}:{line}"
+	file-style = "#ff00ff bold"
+	hunk-header-style = "#39ff14 bold"
+	plus-style = syntax "#0d2818"
+	plus-emph-style = syntax "#1a4830"
+	minus-style = syntax "#2e0a14"
+	minus-emph-style = syntax "#5a1230"
+
+[merge]
+	conflictstyle = zdiff3
+	tool = nvim
+	ff = false
+
+[diff]
+	colorMoved = default
+	algorithm = histogram
+	mnemonicPrefix = true
+	renames = true
+
+[pull]
+	rebase = true
+	autoStash = true
+
+[push]
+	default = current
+	autoSetupRemote = true
+	followTags = true
+
+[rebase]
+	autoStash = true
+	autoSquash = true
+
+[fetch]
+	prune = true
+	pruneTags = true
+
+[rerere]
+	enabled = true              # remember conflict resolutions
+
+[column]
+	ui = auto
+
+[branch]
+	sort = -committerdate
+
+[help]
+	autocorrect = prompt
+
+# Sign commits & tags (requires gpg or ssh signing key configured)
+# [commit]
+#	gpgsign = true
+# [tag]
+#	gpgsign = true
+# [gpg]
+#	format = ssh
+
+[alias]
+	co = checkout
+	br = branch
+	cm = commit -m
+	ca = commit --amend --no-edit
+	st = status -sb
+	df = diff
+	dc = diff --cached
+	lg = log --oneline --graph --decorate --all -30
+	last = log -1 HEAD --stat
+	unstage = reset HEAD --
+	undo = reset --soft HEAD~1
+	wip = !git add -A && git commit -m 'wip'
+	publish = !git push -u origin $(git rev-parse --abbrev-ref HEAD)
+	prune-branches = !git branch --merged main | grep -v '^\\*\\| main$' | xargs -n 1 git branch -d
+	root = rev-parse --show-toplevel
+	# Show what changed across a range that's not yet pushed
+	out = log @{u}..HEAD --oneline
+	# Show what's new on remote that you haven't pulled
+	in = !git fetch && git log HEAD..@{u} --oneline
+
+[color]
+	ui = auto
+
+[advice]
+	addEmptyPathspec = false
+	pushNonFastForward = false
+	statusHints = false

@@ -1,0 +1,128 @@
+# ~/.config/starship.toml — evangelion-neon prompt
+# https://starship.rs/config/
+
+format = """
+[╭─](fg:eva_purple)\
+$os\
+$username\
+[@](fg:fg_dim)\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$git_state\
+$nodejs\
+$python\
+$rust\
+$golang\
+$swift\
+$java\
+$docker_context\
+$cmd_duration\
+$line_break\
+[╰─](fg:eva_purple)$character"""
+
+add_newline = true
+palette = "evangelion"
+
+[palettes.evangelion]
+eva_green     = "#39ff14"
+eva_purple    = "#b026ff"
+magenta       = "#ff00ff"
+pink_hot      = "#ff1493"
+cyan_electric = "#00ffff"
+blue_signal   = "#0099ff"
+orange_eva    = "#ff6f00"
+yellow_elec   = "#ffea00"
+red_alert     = "#ff1744"
+fg_primary    = "#e0e0ff"
+fg_dim        = "#6a6a8a"
+
+[character]
+success_symbol = "[➜](bold eva_green)"
+error_symbol   = "[✗](bold red_alert)"
+vimcmd_symbol  = "[N](bold eva_purple)"
+
+[os]
+disabled = false
+format = "[$symbol]($style) "
+style = "fg:eva_purple"
+
+[os.symbols]
+Macos = " "
+
+[username]
+show_always = true
+style_user = "fg:cyan_electric bold"
+style_root = "fg:red_alert bold"
+format = "[$user]($style)"
+
+[hostname]
+ssh_only = false
+format = "[$hostname](fg:magenta) "
+
+[directory]
+style = "fg:yellow_elec bold"
+format = "[ $path]($style)[$read_only](fg:red_alert) "
+truncation_length = 4
+truncation_symbol = "…/"
+read_only = " "
+
+[git_branch]
+symbol = " "
+style = "fg:eva_purple bold"
+format = "on [$symbol$branch]($style) "
+
+[git_status]
+style = "fg:red_alert"
+format = "([\\[$all_status$ahead_behind\\]]($style) )"
+conflicted = "="
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+up_to_date = ""
+untracked = "?${count}"
+stashed = "\\$"
+modified = "!${count}"
+staged = "+${count}"
+renamed = "»${count}"
+deleted = "✘${count}"
+
+[nodejs]
+symbol = " "
+style = "fg:eva_green"
+format = "via [$symbol($version)]($style) "
+
+[python]
+symbol = " "
+style = "fg:yellow_elec"
+format = "via [$symbol($version)( \\($virtualenv\\))]($style) "
+
+[rust]
+symbol = " "
+style = "fg:orange_eva"
+format = "via [$symbol($version)]($style) "
+
+[golang]
+symbol = " "
+style = "fg:cyan_electric"
+format = "via [$symbol($version)]($style) "
+
+[swift]
+symbol = " "
+style = "fg:orange_eva"
+format = "via [$symbol($version)]($style) "
+
+[java]
+symbol = " "
+style = "fg:red_alert"
+format = "via [$symbol($version)]($style) "
+
+[docker_context]
+symbol = " "
+style = "fg:blue_signal"
+format = "via [$symbol$context]($style) "
+
+[cmd_duration]
+min_time = 1500
+format = "took [$duration](fg:fg_dim) "
