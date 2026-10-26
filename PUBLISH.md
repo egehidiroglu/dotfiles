@@ -3,7 +3,7 @@
 Run these once. The repo will live at `https://github.com/<your-user>/dotfiles`.
 
 ```bash
-cd ~/Desktop/Coding/dotfiles
+cd ~/Code/dotfiles
 
 # Make sure git knows who you are
 git config --global user.name  "Ege Hidiroglu"
@@ -24,8 +24,8 @@ That's it. The repo is live and `origin/main` tracks your local main.
 ## On a new Mac later
 
 ```bash
-git clone https://github.com/<your-user>/dotfiles ~/Desktop/Coding/dotfiles
-cd ~/Desktop/Coding/dotfiles
+git clone https://github.com/<your-user>/dotfiles ~/Code/dotfiles
+cd ~/Code/dotfiles
 bash setup.sh
 bash macos.sh
 ```
@@ -35,7 +35,7 @@ bash macos.sh
 After tweaking a dotfile (say `~/.zshrc`) you'll want to copy the change back into the repo and push it. There's no symlink magic in this kit — `setup.sh` does plain copies — so the workflow is:
 
 ```bash
-cd ~/Desktop/Coding/dotfiles
+cd ~/Code/dotfiles
 cp ~/.zshrc                          ./zshrc
 cp ~/.config/starship.toml           ./starship.toml
 cp ~/.tmux.conf                      ./tmux.conf
