@@ -61,16 +61,26 @@ alias please='sudo $(fc -ln -1)'   # rerun last command as root
 alias ip='curl -s https://api.ipify.org && echo'
 alias weather='curl -s "wttr.in/?format=3"'
 
-# ── ports: what's listening, and which folder it runs from ────────────────
+# ── ports: what's listening, where it runs, and its URL ───────────────────
 function ports {
-  local port pid proc addr cwd containers
-  printf '%-6s %-7s %-20s %-18s %s\n' PORT PID PROCESS ADDRESS FOLDER
-  lsof +c 0 -nP -iTCP -sTCP:LISTEN 2>/dev/null \
-    | awk 'NR>1 {n=split($9,a,":"); print a[n], $2, $1, $9}' | sort -u | sort -n \
-    | while read -r port pid proc addr; do
-        cwd=$(lsof -a -d cwd -p "$pid" -Fn 2>/dev/null | awk '/^n/ {print substr($0,2)}')
-        printf '%-6s %-7s %-20s %-18s %s\n' "$port" "$pid" "${proc//\\x20/ }" "$addr" "${(D)cwd}"
-      done
+  local port pid proc addr cwd url listeners containers
+  local -a web_ports
+  listeners=$(lsof +c 0 -nP -iTCP -sTCP:LISTEN 2>/dev/null \
+    | awk 'NR>1 {n=split($9,a,":"); print a[n], $2, $1, $9}' | sort -u | sort -n)
+  # A port gets a URL if / answers 2xx, 3xx or HTML. Databases are skipped because
+  # the request lands in their logs, system apps because some never answer.
+  web_ports=(${(f)"$(print -r -- "$listeners" \
+    | awk '$3 !~ /^(Code|ControlCenter|rapportd|Raycast)/ && $1 !~ /^(3306|5432|6379|27017)$/ {print $1}' \
+    | sort -un \
+    | xargs -P 16 -I{} curl --noproxy '*' -s -o /dev/null -m 3 -w '{} %{http_code} %{content_type}\n' 'http://localhost:{}/' \
+    | awk '$2 ~ /^[23]/ || $3 ~ /text\/html/ {print $1}')"})
+  printf '%-6s %-7s %-20s %-18s %-22s %s\n' PORT PID PROCESS ADDRESS URL FOLDER
+  print -r -- "$listeners" | while read -r port pid proc addr; do
+    cwd=$(lsof -a -d cwd -p "$pid" -Fn 2>/dev/null | awk '/^n/ {print substr($0,2)}')
+    url=""
+    (( ${web_ports[(Ie)$port]} )) && url="http://localhost:$port"
+    printf '%-6s %-7s %-20s %-18s %-22s %s\n' "$port" "$pid" "${proc//\\x20/ }" "$addr" "$url" "${(D)cwd}"
+  done
   # Docker's ports all show up as com.docker.backend, so name the containers too.
   containers=$(docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Ports}}' 2>/dev/null)
   if [[ -n "$containers" ]]; then
