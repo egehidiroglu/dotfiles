@@ -60,7 +60,23 @@ alias mkdir='mkdir -p'
 alias please='sudo $(fc -ln -1)'   # rerun last command as root
 alias ip='curl -s https://api.ipify.org && echo'
 alias weather='curl -s "wttr.in/?format=3"'
-alias ports='lsof -iTCP -sTCP:LISTEN -n -P'
+
+# ── ports: what's listening, and which folder it runs from ────────────────
+function ports {
+  local port pid proc addr cwd containers
+  printf '%-6s %-7s %-20s %-18s %s\n' PORT PID PROCESS ADDRESS FOLDER
+  lsof +c 0 -nP -iTCP -sTCP:LISTEN 2>/dev/null \
+    | awk 'NR>1 {n=split($9,a,":"); print a[n], $2, $1, $9}' | sort -u | sort -n \
+    | while read -r port pid proc addr; do
+        cwd=$(lsof -a -d cwd -p "$pid" -Fn 2>/dev/null | awk '/^n/ {print substr($0,2)}')
+        printf '%-6s %-7s %-20s %-18s %s\n' "$port" "$pid" "${proc//\\x20/ }" "$addr" "${(D)cwd}"
+      done
+  # Docker's ports all show up as com.docker.backend, so name the containers too.
+  containers=$(docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Ports}}' 2>/dev/null)
+  if [[ -n "$containers" ]]; then
+    printf '\n%s\n' "$containers"
+  fi
+}
 
 # ── fzf integrations ──────────────────────────────────────────────────────
 [[ -f "$HOME/.fzf.zsh" ]] && source "$HOME/.fzf.zsh"
